@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice — Chadrey Wholesale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site">
+  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
+  <nav class="main">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="request-quote.html">Request a Quote</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="my-quotes.html" class="active">My Quotes</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="nav-actions"><div class="avatar">AB</div></div>
+</header>
+
+<main class="page page-pad" style="max-width:800px;">
+  <p class="eyebrow"><a href="my-quotes.html" style="color:inherit;">&larr; Back to My Quotes</a></p>
+  <h1 style="font-size:1.4rem;">Document 3 of 3: Invoice</h1>
+  <p class="lede">Confirmed costs, ready for payment.</p>
+
+  <div class="doc-card" style="margin-top:1.5rem;">
+    <div class="doc-head">
+      <div><h3>Invoice</h3><div class="doc-id">Invoice #WR-2026-00125 &middot; Aug 7, 2026</div></div>
+      <span class="doc-status">Confirmed</span>
+    </div>
+    <div class="doc-body">
+      <table class="doc-table">
+        <thead><tr><th>Item</th><th>Qty</th><th>Unit Price</th><th style="text-align:right;">Total</th></tr></thead>
+        <tbody>
+          <tr><td>Cotton Oversized T-Shirt (Black, mixed sizes)</td><td>500</td><td>$4.35</td><td style="text-align:right;">$2,175.00</td></tr>
+          <tr><td style="color:var(--ink-faint);">Shipping</td><td>&mdash;</td><td>&mdash;</td><td style="text-align:right;">$310.00</td></tr>
+          <tr><td style="color:var(--ink-faint);">Tax / duties</td><td>&mdash;</td><td>&mdash;</td><td style="text-align:right;">$95.00</td></tr>
+          <tr><td style="color:var(--ink-faint);">Other charges</td><td>&mdash;</td><td>&mdash;</td><td style="text-align:right;">$25.00</td></tr>
+          <tr class="total"><td>TOTAL</td><td></td><td></td><td style="text-align:right;">$2,605.00</td></tr>
+        </tbody>
+      </table>
+
+      <div class="doc-meta"><span>Estimated shipping date</span><span style="font-weight:600;">Sep 18, 2026</span></div>
+      <div class="doc-meta"><span>Estimated delivery</span><span style="font-weight:600;">Sep 25 – 30, 2026</span></div>
+
+      <div class="doc-note">This invoice reflects confirmed pricing at the time it was issued. Once you accept and pay, your order moves into processing.</div>
+
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.75rem;">
+        <button class="btn btn-primary is-disabled" disabled title="Payment integration is part of the full build">Proceed to Payment</button>
+        <a class="btn btn-secondary" href="contact.html">Questions about this invoice</a>
+      </div>
+      <p style="font-size:0.78rem; color:var(--ink-faint); margin-top:0.75rem;">Payment isn't wired up in this prototype — it's the next piece once we build the real backend.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site">Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a></footer>
+</body>
+</html>

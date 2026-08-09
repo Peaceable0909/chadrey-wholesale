@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — Chadrey Wholesale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site">
+  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
+  <nav class="main">
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Products</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="my-quotes.html">My Quotes</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main class="page page-pad">
+  <p class="eyebrow">Catalog</p>
+  <h1>Browse products</h1>
+  <p class="lede">No fixed prices — every product is priced per your exact order. Open a product to see colors, sizes, and minimum order quantity, then request a quote.</p>
+
+  <div class="grid-3" id="catalog" style="margin-top:1.75rem;"></div>
+</main>
+
+<footer class="site">
+  Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  document.getElementById('catalog').innerHTML = PRODUCTS.map(p => `
+    <div class="product-card">
+      <div class="card-visual"><span class="moq-flag">MOQ ${p.moq}</span>
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${ICONS[p.icon]}</svg>
+      </div>
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <span class="price-tag">Price: Request a Quote</span>
+        <a class="btn btn-secondary btn-block" href="product.html?id=${p.id}">View product</a>
+      </div>
+    </div>`).join('');
+</script>
+</body>
+</html>

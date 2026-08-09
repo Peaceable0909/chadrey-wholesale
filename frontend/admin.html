@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard (Prototype) — Chadrey Wholesale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .admin-shell{display:grid; grid-template-columns:1fr; min-height:100vh;}
+  @media (min-width:900px){ .admin-shell{grid-template-columns:250px 1fr;} }
+  .activity-item{display:flex; gap:0.7rem; align-items:flex-start; padding:0.6rem 0; font-size:0.84rem;}
+  .activity-item .dotwrap{width:30px; height:30px; border-radius:50%; background:var(--brand-light); color:var(--brand); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .activity-item .t{color:var(--ink-faint); font-size:0.75rem;}
+</style>
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="dash-sidebar">
+    <a href="admin.html" class="brand" style="color:#fff; margin-bottom:1.5rem;"><svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines" style="color:#fff;">CHADREY<small style="color:rgba(255,255,255,0.6);">WHOLESALE</small></span></a>
+    <a href="admin.html" class="active">Dashboard</a>
+    <a href="admin.html">Quote Requests</a>
+    <a href="admin.html">Quotations</a>
+    <a href="admin.html">Invoices</a>
+    <a href="admin.html">Orders</a>
+    <a href="admin.html">Payments</a>
+    <a href="admin.html">Products</a>
+    <a href="admin.html">Customers</a>
+    <a href="admin.html">Suppliers</a>
+    <a href="admin.html">Reports</a>
+    <a href="admin.html">Settings</a>
+    <div class="sidebar-foot">
+      <a href="index.html">&larr; Back to customer site</a>
+    </div>
+  </aside>
+
+  <div class="dash-main">
+    <div class="dash-header">
+      <div>
+        <h1 style="margin-bottom:0.15rem;">Dashboard</h1>
+        <p class="lede" style="margin:0;">Welcome back, Admin</p>
+      </div>
+      <div class="avatar">AD</div>
+    </div>
+
+    <div class="prototype-note">This is a rough sketch of the admin side so the whole loop makes sense — it isn't the real dashboard. No login, no live data.</div>
+
+    <div class="grid-4" style="margin-bottom:1.75rem;">
+      <div class="stat-card">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.8"/></svg></div>
+        <div class="label">Quote Requests</div>
+        <div class="value">24</div>
+        <div class="delta">&uarr; 18% from last week</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8"/></svg></div>
+        <div class="label">Quotations Sent</div>
+        <div class="value">16</div>
+        <div class="delta">&uarr; 12% from last week</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l3 3v15H6z" stroke="currentColor" stroke-width="1.8"/></svg></div>
+        <div class="label">Invoices</div>
+        <div class="value">9</div>
+        <div class="delta">&uarr; 8% from last week</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7h18v12H3z" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.8"/></svg></div>
+        <div class="label">Orders</div>
+        <div class="value">17</div>
+        <div class="delta">&uarr; 15% from last week</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="align-items:start;">
+      <div class="card" style="padding:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.9rem;">
+          <h3 style="margin:0; font-size:1rem;">Recent Quote Requests</h3>
+          <a href="#" style="font-size:0.8rem; color:var(--brand); font-weight:600;">View All</a>
+        </div>
+        <table class="data-table" id="requestsTable">
+          <thead><tr><th>Request ID</th><th>Product</th><th>Qty</th><th>Status</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="card" style="padding:1.25rem;">
+        <h3 style="margin:0 0 0.9rem; font-size:1rem;">Activity Feed</h3>
+        <div class="activity-item"><div class="dotwrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2"/></svg></div><div><div>New quote request received <strong>WR-Q-2026-00125</strong> from ABC Fashion Ltd.</div><div class="t">2 minutes ago</div></div></div>
+        <div class="activity-item"><div class="dotwrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="currentColor" stroke-width="2"/></svg></div><div><div>Payment received — $4,080.00 from Global Trade Co.</div><div class="t">1 hour ago</div></div></div>
+        <div class="activity-item"><div class="dotwrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/></svg></div><div><div>Quotation sent — WR-QUO-2026-00120 to XYZ Stores</div><div class="t">25 minutes ago</div></div></div>
+        <div class="activity-item"><div class="dotwrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="currentColor" stroke-width="2"/></svg></div><div><div>Order confirmed — WR-ORD-2026-00117</div><div class="t">2 hours ago</div></div></div>
+      </div>
+    </div>
+
+    <h2>Generate quotation — WR-Q-2026-00118 (Premium Fleece Hoodie)</h2>
+    <p class="lede">This is the internal form you'd use to turn a pending request into a quotation. Purely illustrative in this prototype.</p>
+    <div class="card" style="padding:1.5rem; max-width:640px;">
+      <div class="field-group cols-2">
+        <div><label>Supplier cost / piece</label><input type="text" placeholder="$3.10" disabled></div>
+        <div><label>Freight allocation / piece</label><input type="text" placeholder="$0.45" disabled></div>
+        <div><label>Your markup / piece</label><input type="text" placeholder="$0.80" disabled></div>
+        <div><label>Resulting quoted unit price</label><input type="text" placeholder="$4.35" disabled></div>
+      </div>
+      <div style="height:1rem"></div>
+      <label>Internal note <span class="hint">(not shown to customer)</span></label>
+      <textarea placeholder="Supplier confirmed stock, 3-week lead time" disabled></textarea>
+      <button class="btn btn-primary btn-block is-disabled" disabled style="margin-top:1.25rem;">Send quotation to customer</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  document.querySelector('#requestsTable tbody').innerHTML = FAKE_QUOTES.map(q => `
+    <tr>
+      <td style="font-weight:600;">${q.ref}</td>
+      <td>${q.product}</td>
+      <td>${q.qty} pcs</td>
+      <td>${statusBadge(q.status)}</td>
+    </tr>`).join('');
+</script>
+</body>
+</html>

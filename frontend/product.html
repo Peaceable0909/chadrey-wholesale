@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product — Chadrey Wholesale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .gallery-thumbs{display:flex; gap:0.6rem; margin-top:0.75rem;}
+  .gallery-thumbs .thumb{width:64px; height:64px; border-radius:8px; background:var(--bg); border:2px solid var(--line); display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .gallery-thumbs .thumb.active{border-color:var(--brand);}
+  .gallery-thumbs .thumb svg{width:55%; height:55%; color:var(--brand);}
+  .detail-list{border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-top:1.25rem;}
+  .detail-list .row{display:flex; justify-content:space-between; padding:0.65rem 1rem; font-size:0.85rem; border-bottom:1px solid var(--line);}
+  .detail-list .row:last-child{border-bottom:0;}
+  .detail-list .row span:first-child{color:var(--ink-faint);}
+  .quote-panel{background:var(--white); border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow);}
+</style>
+</head>
+<body>
+<header class="site">
+  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
+  <nav class="main">
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Products</a>
+    <a href="request-quote.html">Request a Quote</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="my-quotes.html">My Quotes</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="nav-actions">
+    <a href="my-quotes.html" class="nav-icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8"/></svg><span class="dot"></span></a>
+    <div class="avatar">AB</div>
+  </div>
+</header>
+<div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; <a href="products.html">Products</a> &rsaquo; <span id="bcName">Product</span></div>
+
+<main class="page page-pad">
+  <div class="grid-2" id="productDetail"></div>
+</main>
+
+<footer class="site">Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a></footer>
+
+<script src="data.js"></script>
+<script>
+  const id = getQueryParam('id') || PRODUCTS[0].id;
+  const p = PRODUCTS.find(x => x.id === id) || PRODUCTS[0];
+  document.title = p.name + ' — Chadrey Wholesale';
+  document.getElementById('bcName').textContent = p.name;
+
+  document.getElementById('productDetail').innerHTML = `
+    <div>
+      <div class="card-visual card" style="aspect-ratio:4/3; position:relative;">
+        <span class="moq-flag" style="position:absolute; top:0.9rem; left:0.9rem;">MOQ ${p.moq} pcs</span>
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:42%;height:42%;color:var(--brand);">${ICONS[p.icon]}</svg>
+      </div>
+      <div class="gallery-thumbs">
+        <div class="thumb active"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">${ICONS[p.icon]}</svg></div>
+        <div class="thumb"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.6;">${ICONS[p.icon]}</svg></div>
+        <div class="thumb"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.3;">${ICONS[p.icon]}</svg></div>
+      </div>
+
+      <div class="detail-list">
+        <div class="row"><span>Category</span><span>Apparel</span></div>
+        <div class="row"><span>Minimum order</span><span>${p.moq} pieces</span></div>
+        <div class="row"><span>Available colours</span><span>${p.colors.join(', ')}</span></div>
+        <div class="row"><span>Available sizes</span><span>${p.sizes.join(', ')}</span></div>
+        <div class="row"><span>Packaging</span><span>${p.packaging.join(', ')}</span></div>
+        <div class="row"><span>Customization</span><span>${p.customization.join(', ')}</span></div>
+      </div>
+    </div>
+
+    <div>
+      <h1>${p.name}</h1>
+      <p class="lede">${p.desc}</p>
+      <p class="price-tag" style="font-size:1rem; margin-top:0.5rem;">Price: Request a Quote</p>
+
+      <div class="quote-panel" style="margin-top:1.5rem;">
+        <h3 style="margin:0 0 1rem; font-size:1.02rem;">Request a Quote</h3>
+
+        <div class="field-group cols-2">
+          <div>
+            <label>Colour</label>
+            <select id="colorSel"></select>
+          </div>
+          <div>
+            <label>Size</label>
+            <select id="sizeSel"></select>
+          </div>
+        </div>
+
+        <div style="height:1rem"></div>
+        <label>Quantity (pieces)</label>
+        <input type="number" id="qtyInput" min="${p.moq}" value="${p.moq}">
+
+        <div style="height:1rem"></div>
+        <label>Packaging Preference</label>
+        <select id="packagingSel">${p.packaging.map(o=>`<option>${o}</option>`).join('')}</select>
+
+        <div style="height:1rem"></div>
+        <label>Customization / Printing</label>
+        <select id="customSel">${p.customization.map(o=>`<option>${o}</option>`).join('')}</select>
+
+        <div style="height:1rem"></div>
+        <label>Additional Notes <span class="hint">(optional)</span></label>
+        <textarea placeholder="e.g. Please print our logo on the front left chest."></textarea>
+
+        <a class="btn btn-primary btn-block" style="margin-top:1.25rem;" href="request-quote.html?id=${p.id}">Request Quote</a>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('colorSel').innerHTML = p.colors.map(c=>`<option>${c}</option>`).join('');
+  document.getElementById('sizeSel').innerHTML = p.sizes.map(s=>`<option>${s}</option>`).join('');
+</script>
+</body>
+</html>

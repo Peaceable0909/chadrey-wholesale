@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Chadrey Wholesale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site">
+  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
+  <nav class="main">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="my-quotes.html">My Quotes</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+</header>
+
+<main class="page page-pad" style="max-width:640px;">
+  <p class="eyebrow">Get in touch</p>
+  <h1>Contact us</h1>
+  <p class="lede">Questions about a quote, an existing order, or something not covered by a product page — reach us directly.</p>
+
+  <form class="card" style="padding:1.5rem; margin-top:1.5rem;" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Message sent (prototype)';">
+    <label for="name">Full name</label>
+    <input type="text" id="name" required>
+    <div style="height:1rem"></div>
+    <label for="cemail">Email</label>
+    <input type="email" id="cemail" required>
+    <div style="height:1rem"></div>
+    <label for="cmessage">Message</label>
+    <textarea id="cmessage" required></textarea>
+    <button type="submit" class="btn btn-primary btn-block" style="margin-top:1.25rem;">Send message</button>
+  </form>
+
+  <div class="card" style="padding:1.25rem; margin-top:1.5rem; font-size:0.9rem; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">WhatsApp:</strong> +234 XXX XXX XXXX &nbsp;&middot;&nbsp;
+    <strong style="color:var(--ink);">Email:</strong> orders@chadrey.example
+  </div>
+</main>
+
+<footer class="site">
+  Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a>
+</footer>
+</body>
+</html>

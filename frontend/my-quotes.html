@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Quotes — Chadrey Wholesale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site">
+  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
+  <nav class="main">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="request-quote.html">Request a Quote</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="my-quotes.html" class="active">My Quotes</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="nav-actions">
+    <a href="my-quotes.html" class="nav-icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8"/></svg><span class="dot"></span></a>
+    <div class="avatar">AB</div>
+  </div>
+</header>
+
+<div class="dash-shell">
+  <aside class="dash-sidebar">
+    <a href="my-quotes.html">Dashboard</a>
+    <a href="my-quotes.html" class="active">My Quotes</a>
+    <a href="my-quotes.html">My Invoices</a>
+    <a href="my-quotes.html">My Orders</a>
+    <a href="my-quotes.html">Payments</a>
+    <a href="my-quotes.html">Addresses</a>
+    <a href="my-quotes.html">Account Settings</a>
+    <div class="sidebar-foot">
+      <a href="index.html">Logout</a>
+    </div>
+  </aside>
+
+  <div class="dash-main">
+    <div class="dash-header">
+      <div>
+        <h1 style="margin-bottom:0.2rem;">My Quotes</h1>
+        <p class="lede" style="margin:0;">Track all your quote requests and quotations</p>
+      </div>
+      <a class="btn btn-primary" href="request-quote.html">+ New Quote Request</a>
+    </div>
+
+    <div class="prototype-note">Prototype only: in the real build this list is tied to your login. Shown here with sample data.</div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="pending">Quote Requests</button>
+      <button class="filter-tab" data-filter="quoted">Quotations</button>
+      <button class="filter-tab" data-filter="invoiced">Invoiced</button>
+      <button class="filter-tab" data-filter="paid">Paid</button>
+    </div>
+
+    <div id="quoteList"></div>
+  </div>
+</div>
+
+<footer class="site">Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a></footer>
+
+<script src="data.js"></script>
+<script>
+  const STATUS_META = {
+    pending:  {label:'Quote Request', badge:'badge-pending', linkLabel:'View Request', href:null},
+    quoted:   {label:'Quotation Sent', badge:'badge-quoted', linkLabel:'View Quotation', href:'quotation.html'},
+    invoiced: {label:'Invoiced', badge:'badge-invoiced', linkLabel:'View Invoice', href:'invoice.html'},
+    paid:     {label:'Paid', badge:'badge-paid', linkLabel:'View Order', href:'invoice.html'}
+  };
+
+  function priceInfo(q){
+    if (q.status === 'pending') return { top: '&mdash;', bottom: 'Awaiting quotation' };
+    const unit = q.status === 'quoted' ? '$4.35' : '$4.35';
+    const total = q.status === 'quoted' ? '$2,175.00' : '$2,605.00';
+    return { top: total, bottom: (q.status === 'quoted' ? 'Est. total' : 'Total') };
+  }
+
+  function render(filter){
+    const list = document.getElementById('quoteList');
+    const items = FAKE_QUOTES.filter(q => filter === 'all' ? true : q.status === filter);
+    if (!items.length){
+      list.innerHTML = `<div class="card" style="padding:2rem; text-align:center; color:var(--ink-faint);">No quotes in this category yet.</div>`;
+      return;
+    }
+    list.innerHTML = items.map(q => {
+      const meta = STATUS_META[q.status];
+      const price = priceInfo(q);
+      const productObj = PRODUCTS.find(p => p.name.includes(q.product.split(' ').slice(-1)[0])) || PRODUCTS[0];
+      const linkHtml = meta.href
+        ? `<a class="btn btn-secondary btn-sm" href="${meta.href}?ref=${q.ref}">${meta.linkLabel}</a>`
+        : `<span class="link-sm" style="color:var(--ink-faint); font-weight:500;">Awaiting review</span>`;
+      return `
+        <div class="quote-row">
+          <div class="thumb"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">${ICONS[productObj.icon]}</svg></div>
+          <div class="info">
+            <div class="ref-row"><span class="ref">${q.ref}</span>${statusBadge(q.status)}</div>
+            <h4>${q.product}</h4>
+            <div class="meta">Colour: ${q.color} &middot; ${q.size} &middot; Qty: ${q.qty} pieces &middot; ${q.date}</div>
+          </div>
+          <div class="price-col">
+            <div class="amt">${price.top}</div>
+            <div class="lbl">${price.bottom}</div>
+          </div>
+          <div class="action-col">${linkHtml}</div>
+        </div>`;
+    }).join('');
+  }
+
+  document.querySelectorAll('.filter-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      render(btn.dataset.filter);
+    });
+  });
+
+  render('all');
+</script>
+</body>
+</html>
