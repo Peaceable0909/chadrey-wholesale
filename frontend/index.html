@@ -2,93 +2,70 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chadrey Wholesale — Source Quality Products, Get the Best Prices</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Chadrey">
+<title>Chadrey Wholesale</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site">
-  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
-  <nav class="main">
-    <a href="index.html" class="active">Home</a>
-    <a href="products.html">Products</a>
-    <a href="request-quote.html">Request a Quote</a>
-    <a href="how-it-works.html">How It Works</a>
-    <a href="my-quotes.html">My Quotes</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <div class="nav-actions">
-    <a href="my-quotes.html" class="nav-icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8"/></svg><span class="dot"></span></a>
-    <div class="avatar">AB</div>
-  </div>
-</header>
+<main class="page">
+  <h1 class="large-title">Chadrey</h1>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <span class="hero-pill">B2B WHOLESALE MARKETPLACE</span>
-      <h1>Source quality products. Get the <span class="accent">best prices.</span></h1>
-      <p class="lede">We connect your business to trusted suppliers worldwide. Request a quote, compare options, and grow your business with confidence.</p>
-      <div style="display:flex; gap:0.9rem; flex-wrap:wrap; margin-top:1.5rem;">
-        <a class="btn btn-primary" href="request-quote.html">Request a Quote &rarr;</a>
-        <a class="btn btn-secondary" href="products.html">Browse Products</a>
-      </div>
-      <div class="trust-row">
-        <div class="trust-item"><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Z" stroke="currentColor" stroke-width="1.8"/></svg></span><div><strong>Trusted Suppliers</strong><span>Verified global manufacturers</span></div></div>
-        <div class="trust-item"><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="1.8"/></svg></span><div><strong>Competitive Pricing</strong><span>Best prices by quantity & destination</span></div></div>
-        <div class="trust-item"><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/></svg></span><div><strong>Custom Solutions</strong><span>Packaging, branding, customization</span></div></div>
-        <div class="trust-item"><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12h13l5 5V12M3 12l4-6h9l4 6" stroke="currentColor" stroke-width="1.8"/></svg></span><div><strong>Reliable Delivery</strong><span>On-time shipping to your destination</span></div></div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="30" width="40" height="18" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="50" r="3.5" stroke="currentColor" stroke-width="2"/><circle cx="36" cy="50" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M46 36h8l6 8v4h-14" stroke="currentColor" stroke-width="2"/></svg>
-      <div class="hero-stat"><div class="n">150+</div><div class="l">Happy Businesses</div></div>
-    </div>
-  </div>
-</section>
+  <form class="search" action="products.html" role="search">
+    <span id="searchIcon"></span>
+    <input type="search" name="q" placeholder="Search products" aria-label="Search products" enterkeyhint="search">
+  </form>
 
-<main class="page page-pad">
-  <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:1rem;">
-    <h2 style="margin-top:0;">Popular Categories</h2>
-    <a href="products.html" style="font-size:0.88rem; font-weight:600; color:var(--brand);">View All Products &rarr;</a>
+  <div class="spacer"></div>
+  <div class="banner">
+    <span class="cell-icon" style="background:var(--blue)" id="bannerIcon"></span>
+    <div><b>Direct from Thai dealers</b><p>Prices follow the exchange rate, so they move. The price you see is today's — request a quote to lock yours in.</p></div>
   </div>
-  <div class="grid-4" id="categoryGrid"></div>
+
+  <div id="home"></div>
 </main>
 
-<section class="howband">
-  <span class="hero-pill" style="background:rgba(255,255,255,0.16); color:#fff;">HOW IT WORKS</span>
-  <h2>From request to delivery</h2>
-  <div class="steps-flow" style="max-width:1000px; margin-left:auto; margin-right:auto;">
-    <div class="step-card"><span class="num">1</span><h4>Browse Products</h4><p>Explore our catalogue and select products you're interested in.</p></div>
-    <div class="step-card"><span class="num">2</span><h4>Request a Quote</h4><p>Submit your requirements, quantity, and preferences through our form.</p></div>
-    <div class="step-card"><span class="num">3</span><h4>Receive Quotation</h4><p>We review your request and send you a preliminary quotation.</p></div>
-    <div class="step-card"><span class="num">4</span><h4>Confirm &amp; Order</h4><p>Accept the quotation, make payment, and we handle the rest.</p></div>
-  </div>
-</section>
-
-<div class="cta-band">
-  <h2 style="margin-top:0;">Ready to grow your business?</h2>
-  <p class="lede" style="margin:0 auto 1.25rem;">Join businesses sourcing smarter with Chadrey Wholesale.</p>
-  <a class="btn btn-primary" href="request-quote.html">Request a Quote Now &rarr;</a>
-</div>
-
-<footer class="site">Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a></footer>
-
-<script src="data.js"></script>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="ui.js"></script>
 <script>
-  const cats = [
-    {name:'Apparel & Clothing', icon:'tshirt', count:'120+ Products'},
-    {name:'Bags & Accessories', icon:'hoodie', count:'80+ Products'},
-    {name:'Footwear', icon:'polo', count:'60+ Products'},
-    {name:'Home & Lifestyle', icon:'tank', count:'70+ Products'}
-  ];
-  document.getElementById('categoryGrid').innerHTML = cats.map(c => `
-    <a href="products.html" class="product-card">
-      <div class="card-visual"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${ICONS[c.icon]}</svg></div>
-      <div class="card-body"><h3>${c.name}</h3><p style="color:var(--ink-faint); font-size:0.8rem;">${c.count}</p></div>
-    </a>`).join('');
+  UI.mount({ tab: "home", title: "Chadrey" });
+  document.getElementById("searchIcon").innerHTML = UI.icon("search", 18);
+  document.getElementById("bannerIcon").innerHTML = UI.icon("tag", 18);
+
+  async function load() {
+    const root = document.getElementById("home");
+    root.innerHTML = '<div class="products" style="margin-top:28px">' + UI.skeletonGrid(4) + "</div>";
+    try {
+      const [items, s] = await Promise.all([Store.products(), Store.settings()]);
+      if (!items.length) {
+        root.innerHTML = '<div class="empty">' + UI.icon("box", 56) + "<h3>No products yet</h3><p>New arrivals are on the way. Check back soon.</p></div>";
+        return;
+      }
+      const cats = Store.categories(items).slice(0, 8);
+      const newest = items.slice().sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")).slice(0, 8);
+      root.innerHTML =
+        '<div class="section-title"><h2>Categories</h2></div>' +
+        '<div class="cats">' + cats.map((c) => {
+          const cs = UI.catStyle(c.name);
+          return '<a class="cat" href="products.html?cat=' + encodeURIComponent(c.name) + '"><span class="tile" style="' + UI.tileBg(cs.color) + '">' + UI.icon(cs.icon, 28) + "</span><span>" + UI.esc(c.name) + "<small>" + c.count + "</small></span></a>";
+        }).join("") + "</div>" +
+        '<div class="section-title"><h2>New arrivals</h2><a href="products.html">See all</a></div>' +
+        '<div class="hscroll">' + newest.map((p) => UI.productCard(p, s)).join("") + "</div>" +
+        '<div class="section-title"><h2>Browse</h2></div>' +
+        '<div class="products">' + items.slice(0, 8).map((p) => UI.productCard(p, s)).join("") + "</div>" +
+        (items.length > 8 ? '<div style="margin-top:20px"><a class="btn btn-block" href="products.html">See all ' + items.length + " products</a></div>" : "");
+    } catch (e) {
+      root.innerHTML = '<div class="empty">' + UI.icon("info", 56) + "<h3>Couldn't load products</h3><p>" + UI.esc(e.message) + '</p><button class="btn" id="retry">Try again</button></div>';
+      document.getElementById("retry").onclick = load;
+    }
+  }
+  load();
 </script>
 </body>
 </html>

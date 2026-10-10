@@ -2,124 +2,91 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Quotes — Chadrey Wholesale</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>Quotes — Chadrey Wholesale</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site">
-  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
-  <nav class="main">
-    <a href="index.html">Home</a>
-    <a href="products.html">Products</a>
-    <a href="request-quote.html">Request a Quote</a>
-    <a href="how-it-works.html">How It Works</a>
-    <a href="my-quotes.html" class="active">My Quotes</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <div class="nav-actions">
-    <a href="my-quotes.html" class="nav-icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8"/></svg><span class="dot"></span></a>
-    <div class="avatar">AB</div>
+<main class="page narrow">
+  <h1 class="large-title">Quotes</h1>
+  <div class="seg" id="filter" role="group" aria-label="Filter">
+    <button data-f="all" aria-pressed="true">All</button>
+    <button data-f="pending" aria-pressed="false">Requested</button>
+    <button data-f="quoted" aria-pressed="false">Quoted</button>
+    <button data-f="invoiced" aria-pressed="false">Invoiced</button>
+    <button data-f="paid" aria-pressed="false">Paid</button>
   </div>
-</header>
+  <div class="spacer"></div>
+  <div id="list"></div>
 
-<div class="dash-shell">
-  <aside class="dash-sidebar">
-    <a href="my-quotes.html">Dashboard</a>
-    <a href="my-quotes.html" class="active">My Quotes</a>
-    <a href="my-quotes.html">My Invoices</a>
-    <a href="my-quotes.html">My Orders</a>
-    <a href="my-quotes.html">Payments</a>
-    <a href="my-quotes.html">Addresses</a>
-    <a href="my-quotes.html">Account Settings</a>
-    <div class="sidebar-foot">
-      <a href="index.html">Logout</a>
+  <div class="list-header">Have a reference?</div>
+  <form class="list" id="find">
+    <div class="cell field-row" style="gap:12px">
+      <div class="field-half"><label for="refIn">Reference number</label><input id="refIn" placeholder="WR-2026-12345" autocapitalize="characters" autocomplete="off"></div>
+      <button class="btn btn-sm btn-primary" type="submit" style="align-self:flex-end">Find</button>
     </div>
-  </aside>
-
-  <div class="dash-main">
-    <div class="dash-header">
-      <div>
-        <h1 style="margin-bottom:0.2rem;">My Quotes</h1>
-        <p class="lede" style="margin:0;">Track all your quote requests and quotations</p>
-      </div>
-      <a class="btn btn-primary" href="request-quote.html">+ New Quote Request</a>
-    </div>
-
-    <div class="prototype-note">Prototype only: in the real build this list is tied to your login. Shown here with sample data.</div>
-
-    <div class="filter-tabs">
-      <button class="filter-tab active" data-filter="all">All</button>
-      <button class="filter-tab" data-filter="pending">Quote Requests</button>
-      <button class="filter-tab" data-filter="quoted">Quotations</button>
-      <button class="filter-tab" data-filter="invoiced">Invoiced</button>
-      <button class="filter-tab" data-filter="paid">Paid</button>
-    </div>
-
-    <div id="quoteList"></div>
-  </div>
-</div>
-
-<footer class="site">Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a></footer>
-
-<script src="data.js"></script>
+  </form>
+  <p class="footnote">Quotes you request are saved on this device. Use a reference to open one from another phone.</p>
+</main>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="ui.js"></script>
 <script>
-  const STATUS_META = {
-    pending:  {label:'Quote Request', badge:'badge-pending', linkLabel:'View Request', href:null},
-    quoted:   {label:'Quotation Sent', badge:'badge-quoted', linkLabel:'View Quotation', href:'quotation.html'},
-    invoiced: {label:'Invoiced', badge:'badge-invoiced', linkLabel:'View Invoice', href:'invoice.html'},
-    paid:     {label:'Paid', badge:'badge-paid', linkLabel:'View Order', href:'invoice.html'}
-  };
+  UI.mount({ tab: "quotes", title: "Quotes" });
+  let quotes = [], filter = "all", products = [];
 
-  function priceInfo(q){
-    if (q.status === 'pending') return { top: '&mdash;', bottom: 'Awaiting quotation' };
-    const unit = q.status === 'quoted' ? '$4.35' : '$4.35';
-    const total = q.status === 'quoted' ? '$2,175.00' : '$2,605.00';
-    return { top: total, bottom: (q.status === 'quoted' ? 'Est. total' : 'Total') };
-  }
-
-  function render(filter){
-    const list = document.getElementById('quoteList');
-    const items = FAKE_QUOTES.filter(q => filter === 'all' ? true : q.status === filter);
-    if (!items.length){
-      list.innerHTML = `<div class="card" style="padding:2rem; text-align:center; color:var(--ink-faint);">No quotes in this category yet.</div>`;
+  function render() {
+    const items = quotes.filter((q) => filter === "all" || q.status === filter);
+    const $l = document.getElementById("list");
+    if (!items.length) {
+      $l.innerHTML = '<div class="empty">' + UI.icon("doc", 56) + "<h3>" + (quotes.length ? "Nothing here" : "No quotes yet") + "</h3><p>" +
+        (quotes.length ? "No quotes in this group." : "Pick a product and request a quote. It will show up here.") + "</p>" +
+        (quotes.length ? "" : '<a class="btn btn-primary" href="products.html">Browse products</a>') + "</div>";
       return;
     }
-    list.innerHTML = items.map(q => {
-      const meta = STATUS_META[q.status];
-      const price = priceInfo(q);
-      const productObj = PRODUCTS.find(p => p.name.includes(q.product.split(' ').slice(-1)[0])) || PRODUCTS[0];
-      const linkHtml = meta.href
-        ? `<a class="btn btn-secondary btn-sm" href="${meta.href}?ref=${q.ref}">${meta.linkLabel}</a>`
-        : `<span class="link-sm" style="color:var(--ink-faint); font-weight:500;">Awaiting review</span>`;
-      return `
-        <div class="quote-row">
-          <div class="thumb"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">${ICONS[productObj.icon]}</svg></div>
-          <div class="info">
-            <div class="ref-row"><span class="ref">${q.ref}</span>${statusBadge(q.status)}</div>
-            <h4>${q.product}</h4>
-            <div class="meta">Colour: ${q.color} &middot; ${q.size} &middot; Qty: ${q.qty} pieces &middot; ${q.date}</div>
-          </div>
-          <div class="price-col">
-            <div class="amt">${price.top}</div>
-            <div class="lbl">${price.bottom}</div>
-          </div>
-          <div class="action-col">${linkHtml}</div>
-        </div>`;
-    }).join('');
+    $l.innerHTML = '<div class="list">' + items.map((q) => {
+      const prod = products.find((x) => x.id === q.productId);
+      const dest = (q.status === "invoiced" || q.status === "paid") ? "invoice.html" : "quotation.html";
+      let amt = "";
+      if (q.invoice) amt = Store.money(Store.invoiceTotal(q.invoice), q.invoice.currency);
+      else if (q.quotation) amt = Store.money(q.quotation.unitPrice * q.quotation.qty, q.quotation.currency);
+      return '<a class="cell" href="' + dest + "?ref=" + encodeURIComponent(q.ref) + '">' +
+        '<div class="thumb">' + UI.visual(prod || { name: q.product, category: "", images: [] }) + "</div>" +
+        '<div class="grow"><span class="title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + UI.esc(q.product) + "</span>" +
+        '<span class="sub">' + UI.esc(q.ref) + " · " + q.qty + " pcs · " + Store.fmtDate(q.createdAt) + "</span>" +
+        '<span style="display:block;margin-top:5px">' + UI.statusBadge(q.status) + "</span></div>" +
+        (amt ? '<b style="font-size:16px">' + UI.esc(amt) + "</b>" : "") + '<span class="chev">' + UI.icon("chev", 18) + "</span></a>";
+    }).join("") + "</div>";
   }
 
-  document.querySelectorAll('.filter-tab').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      render(btn.dataset.filter);
-    });
+  document.getElementById("filter").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-f]"); if (!b) return;
+    filter = b.dataset.f;
+    document.querySelectorAll("#filter button").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    render();
   });
 
-  render('all');
+  document.getElementById("find").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const ref = document.getElementById("refIn").value.trim().toUpperCase();
+    if (!ref) return;
+    try {
+      const q = await Store.quote(ref);
+      if (!q) { UI.toast("No quote with that reference"); return; }
+      Store.rememberRef(q.ref); document.getElementById("refIn").value = "";
+      quotes = await Store.myQuotes(); render(); UI.toast("Added " + q.ref);
+    } catch (x) { UI.toast(x.message); }
+  });
+
+  (async function () {
+    document.getElementById("list").innerHTML = '<div class="skel" style="height:240px"></div>';
+    try { [quotes, products] = await Promise.all([Store.myQuotes(), Store.products().catch(() => [])]); render(); }
+    catch (e) { document.getElementById("list").innerHTML = '<div class="empty">' + UI.icon("info", 56) + "<h3>Couldn't load</h3><p>" + UI.esc(e.message) + "</p></div>"; }
+  })();
 </script>
 </body>
 </html>

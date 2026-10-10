@@ -2,142 +2,152 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Request a Quote — Chadrey Wholesale</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>Request a quote — Chadrey Wholesale</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site">
-  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
-  <nav class="main">
-    <a href="index.html">Home</a>
-    <a href="products.html">Products</a>
-    <a href="how-it-works.html">How It Works</a>
-    <a href="my-quotes.html">My Quotes</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
+<main class="page narrow">
+  <h1 class="large-title">Request a quote</h1>
+  <p class="subtitle">Free, no payment now. We confirm today's price with the dealer and send you a quotation.</p>
 
-<main class="page page-pad" style="max-width:760px;">
-  <p class="eyebrow">Step 1 of 3 &middot; Quote Request</p>
-  <h1>Request a quote</h1>
-  <p class="lede">No price is generated here yet — this just sends your requirements to us. You'll get a preliminary quotation next.</p>
-
-  <form class="card" id="quoteForm" style="padding:clamp(1.25rem,4vw,2rem); margin-top:1.5rem;">
-    <fieldset>
-      <label for="product">Product</label>
-      <select id="product" name="product" required></select>
-    </fieldset>
-
-    <div class="field-group cols-2">
-      <div>
-        <label for="qty">Quantity <span class="hint" id="moqHint"></span></label>
-        <input type="number" id="qty" name="qty" min="1" required>
+  <form id="form" novalidate>
+    <div class="list-header">Product</div>
+    <div class="list">
+      <div class="cell">
+        <div class="thumb" id="thumb"></div>
+        <div class="grow">
+          <label class="caption" for="product" style="display:block">Product</label>
+          <select id="product" name="product" style="width:100%;border:0;background:none;outline:0;font-size:17px;font-weight:500;color:var(--label);padding:2px 0" required></select>
+        </div>
       </div>
-      <div>
-        <label for="packaging">Packaging preference</label>
-        <select id="packaging" name="packaging" required></select>
+      <div class="cell">
+        <div class="grow"><span class="title">Quantity</span><span class="sub" id="moqHint"></span></div>
+        <div class="stepper"><button type="button" id="minus" aria-label="Fewer">−</button><input id="qty" name="qty" type="number" inputmode="numeric" required aria-label="Quantity"><button type="button" id="plus" aria-label="More">+</button></div>
+      </div>
+      <div class="cell" style="min-height:0"><span class="grow muted" id="estLabel">Estimated product cost</span><b id="est"></b></div>
+    </div>
+    <p class="footnote">Estimate only. Shipping and duties are added in your quotation.</p>
+
+    <div id="optionsWrap">
+      <div class="list-header" id="colorHead">Colour</div>
+      <div class="list" id="colorList"><div class="cell"><div class="chips wrap" id="colors" role="group" aria-labelledby="colorHead"></div></div></div>
+      <div class="list-header" id="sizeHead">Sizes <span style="text-transform:none">(pick any)</span></div>
+      <div class="list" id="sizeList"><div class="cell"><div class="chips wrap" id="sizes" role="group" aria-labelledby="sizeHead"></div></div></div>
+      <div class="list-header" id="prefHead">Preferences</div>
+      <div class="list" id="prefList">
+        <div class="cell field" id="packRow"><label for="packaging">Packaging</label><select id="packaging" name="packaging"></select></div>
+        <div class="cell field" id="customRow"><label for="customization">Customisation</label><select id="customization" name="customization"></select></div>
       </div>
     </div>
 
-    <div style="height:1.1rem"></div>
-    <label id="colorLabel">Color</label>
-    <div class="swatches" id="colorSwatches" role="group" aria-labelledby="colorLabel"></div>
+    <div class="list-header">Notes <span style="text-transform:none">(optional)</span></div>
+    <div class="list"><div class="cell field"><textarea id="notes" aria-label="Notes" name="notes" placeholder="Anything else about this order — e.g. print our logo on the left chest"></textarea></div></div>
 
-    <div style="height:1.1rem"></div>
-    <label id="sizeLabel">Size(s) needed <span class="hint">(select all that apply)</span></label>
-    <div class="swatches" id="sizeSwatches" role="group" aria-labelledby="sizeLabel"></div>
-
-    <div style="height:1.1rem"></div>
-    <label for="customization">Customization</label>
-    <select id="customization" name="customization"></select>
-
-    <div style="height:1.1rem"></div>
-    <label for="notes">Other preferences / notes <span class="hint">(optional)</span></label>
-    <textarea id="notes" name="notes" placeholder="Anything else about this order"></textarea>
-
-    <h2 style="margin-top:2rem;">Your details</h2>
-    <div class="field-group cols-2">
-      <div><label for="company">Full name / company name</label><input type="text" id="company" required></div>
-      <div><label for="email">Email</label><input type="email" id="email" required></div>
-      <div><label for="phone">Phone number</label><input type="tel" id="phone" required></div>
-      <div><label for="whatsapp">WhatsApp number <span class="hint">(if different)</span></label><input type="tel" id="whatsapp"></div>
+    <div class="list-header">Your details</div>
+    <div class="list">
+      <div class="cell field"><label for="company">Name or company</label><input id="company" name="company" autocomplete="organization" required></div>
+      <div class="cell field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" required></div>
+      <div class="cell field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
+      <div class="cell field"><label for="whatsapp">WhatsApp <span style="font-weight:400">(if different)</span></label><input id="whatsapp" name="whatsapp" type="tel" inputmode="tel"></div>
+      <div class="cell field"><label for="address">Delivery address &amp; country</label><textarea id="address" name="address" autocomplete="street-address" required></textarea></div>
     </div>
-    <div style="height:1rem"></div>
-    <label for="address">Delivery address</label>
-    <textarea id="address" required></textarea>
 
-    <button type="submit" class="btn btn-primary btn-block" style="margin-top:1.75rem;">Request Quote</button>
+    <div class="spacer"></div>
+    <button class="btn btn-primary btn-block" type="submit" id="submit">Send request</button>
+    <p class="footnote center" id="err" style="color:var(--red)" role="alert" hidden></p>
   </form>
 </main>
 
-<footer class="site">
-  Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a>
-</footer>
-
-<script src="data.js"></script>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="ui.js"></script>
 <script>
-  const productSelect = document.getElementById('product');
-  productSelect.innerHTML = PRODUCTS.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+  UI.mount({ tab: null, title: "Request a quote", back: true, backHref: "products.html", tabs: false });
 
-  const preselect = getQueryParam('id');
-  if (preselect) productSelect.value = preselect;
+  const $ = (id) => document.getElementById(id);
+  let all = [], p = null, color = "", sizes = new Set();
+  const stepFor = (moq) => (moq >= 100 ? 50 : moq >= 20 ? 10 : 1);
 
-  const moqHint = document.getElementById('moqHint');
-  const packagingSelect = document.getElementById('packaging');
-  const customizationSelect = document.getElementById('customization');
-  const colorSwatches = document.getElementById('colorSwatches');
-  const sizeSwatches = document.getElementById('sizeSwatches');
-  const qtyInput = document.getElementById('qty');
+  function chipRow(el, list, multi) {
+    el.innerHTML = list.map((v) => '<button type="button" class="chip" data-v="' + UI.esc(v) + '" aria-pressed="false">' + UI.esc(v) + "</button>").join("");
+    el.querySelectorAll(".chip").forEach((b) => b.addEventListener("click", () => {
+      if (multi) { const on = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", on); on ? sizes.add(b.dataset.v) : sizes.delete(b.dataset.v); }
+      else { color = color === b.dataset.v ? "" : b.dataset.v; el.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", x.dataset.v === color)); }
+    }));
+    return el;
+  }
+  function reselect(el, values) { el.querySelectorAll(".chip").forEach((b) => { if (values.includes(b.dataset.v)) b.click(); }); }
 
-  let selectedColor = null;
-  const selectedSizes = new Set();
-
-  function renderSingleSelect(container, values, onSelect){
-    container.innerHTML = values.map(v => `<button type="button" class="swatch-btn" data-value="${v}" aria-pressed="false">${v}</button>`).join('');
-    container.querySelectorAll('.swatch-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        container.querySelectorAll('.swatch-btn').forEach(b=>b.setAttribute('aria-pressed','false'));
-        btn.setAttribute('aria-pressed','true');
-        onSelect(btn.dataset.value);
-      });
-    });
-    if (container.firstElementChild){ container.firstElementChild.click(); }
+  function pick(prod, draft) {
+    p = prod; color = ""; sizes = new Set();
+    $("product").value = p.id;
+    $("thumb").innerHTML = UI.visual(p, false);
+    $("moqHint").textContent = "Minimum " + p.moq;
+    $("qty").min = p.moq;
+    $("qty").value = draft && draft.qty >= p.moq ? draft.qty : p.moq;
+    $("colorHead").hidden = $("colorList").hidden = !p.colors.length;
+    $("sizeHead").hidden = $("sizeList").hidden = !p.sizes.length;
+    if (p.colors.length) { chipRow($("colors"), p.colors, false); if (draft && draft.color) reselect($("colors"), [draft.color]); }
+    if (p.sizes.length) { chipRow($("sizes"), p.sizes, true); if (draft && draft.sizes) reselect($("sizes"), draft.sizes); }
+    $("packRow").hidden = !p.packaging.length; $("customRow").hidden = !p.customization.length;
+    $("prefHead").hidden = $("prefList").hidden = !p.packaging.length && !p.customization.length;
+    $("packaging").innerHTML = p.packaging.map((o) => "<option>" + UI.esc(o) + "</option>").join("");
+    $("customization").innerHTML = p.customization.map((o) => "<option>" + UI.esc(o) + "</option>").join("");
+    estimate();
+  }
+  function estimate() {
+    const q = parseInt($("qty").value, 10) || 0;
+    $("est").textContent = q >= p.moq ? Store.money(Store.priceFor(p, q) * q) : "—";
+    $("estLabel").textContent = q >= p.moq ? "Estimated · " + Store.money(Store.priceFor(p, q)) + " / " + p.unit : "Estimated product cost";
   }
 
-  function renderMultiSelect(container, values, set){
-    container.innerHTML = values.map(v => `<button type="button" class="swatch-btn" data-value="${v}" aria-pressed="false">${v}</button>`).join('');
-    container.querySelectorAll('.swatch-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const pressed = btn.getAttribute('aria-pressed') === 'true';
-        btn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
-        if (pressed) set.delete(btn.dataset.value); else set.add(btn.dataset.value);
-      });
-    });
-  }
+  $("product").addEventListener("change", () => pick(all.find((x) => x.id === $("product").value), null));
+  $("qty").addEventListener("input", estimate);
+  $("qty").addEventListener("change", () => { $("qty").value = Math.max(p.moq, parseInt($("qty").value, 10) || p.moq); estimate(); });
+  $("minus").onclick = () => { $("qty").value = Math.max(p.moq, (parseInt($("qty").value, 10) || p.moq) - stepFor(p.moq)); estimate(); };
+  $("plus").onclick = () => { $("qty").value = (parseInt($("qty").value, 10) || p.moq) + stepFor(p.moq); estimate(); };
 
-  function loadProduct(){
-    const p = PRODUCTS.find(x => x.id === productSelect.value) || PRODUCTS[0];
-    moqHint.textContent = '(minimum ' + p.moq + ' pieces)';
-    qtyInput.min = p.moq;
-    qtyInput.value = p.moq;
-    packagingSelect.innerHTML = p.packaging.map(o => `<option>${o}</option>`).join('');
-    customizationSelect.innerHTML = p.customization.map(o => `<option>${o}</option>`).join('');
-    renderSingleSelect(colorSwatches, p.colors, v => selectedColor = v);
-    selectedSizes.clear();
-    renderMultiSelect(sizeSwatches, p.sizes, selectedSizes);
-  }
-  productSelect.addEventListener('change', loadProduct);
-  loadProduct();
-
-  document.getElementById('quoteForm').addEventListener('submit', function(e){
+  $("form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!this.checkValidity()){ this.reportValidity(); return; }
-    // Prototype only: no backend, so we just simulate a submission and move to the confirmation page.
-    window.location.href = 'confirmation.html';
+    const err = $("err"); err.hidden = true;
+    const f = $("form");
+    if (!f.checkValidity()) { f.reportValidity(); return; }
+    const qty = parseInt($("qty").value, 10);
+    if (!(qty >= p.moq)) { err.textContent = "Minimum order for this product is " + p.moq + "."; err.hidden = false; return; }
+    const btn = $("submit"); btn.disabled = true; btn.textContent = "Sending…";
+    const contact = { company: $("company").value.trim(), email: $("email").value.trim(), phone: $("phone").value.trim(), whatsapp: $("whatsapp").value.trim(), address: $("address").value.trim() };
+    try {
+      const { ref } = await Store.submitQuote(Object.assign({
+        productId: p.id, product: p.name, qty, color, sizes: [...sizes],
+        packaging: p.packaging.length ? $("packaging").value : "", customization: p.customization.length ? $("customization").value : "",
+        notes: $("notes").value.trim(), estUnitPrice: Store.priceFor(p, qty), estCurrency: "THB",
+      }, contact));
+      try { localStorage.setItem("chadrey.contact", JSON.stringify(contact)); sessionStorage.removeItem("chadrey.draft"); } catch (x) {}
+      location.href = "confirmation.html?ref=" + encodeURIComponent(ref);
+    } catch (x) {
+      err.textContent = x.message; err.hidden = false;
+      btn.disabled = false; btn.textContent = "Send request";
+    }
   });
+
+  (async function () {
+    try {
+      all = await Store.products();
+      if (!all.length) { document.querySelector("main").innerHTML = '<div class="empty">' + UI.icon("box", 56) + "<h3>Nothing to quote yet</h3><p>No products are available right now.</p></div>"; return; }
+      $("product").innerHTML = all.map((x) => '<option value="' + UI.esc(x.id) + '">' + UI.esc(x.name) + "</option>").join("");
+      let draft = null; try { draft = JSON.parse(sessionStorage.getItem("chadrey.draft") || "null"); } catch (x) {}
+      const id = UI.qs("id") || (draft && draft.id);
+      pick(all.find((x) => x.id === id) || all[0], draft && draft.id === id ? draft : null);
+      try { const c = JSON.parse(localStorage.getItem("chadrey.contact") || "null"); if (c) Object.keys(c).forEach((k) => { if ($(k)) $(k).value = c[k]; }); } catch (x) {}
+    } catch (e) {
+      document.querySelector("main").innerHTML = '<div class="empty">' + UI.icon("info", 56) + "<h3>Couldn't load</h3><p>" + UI.esc(e.message) + '</p><button class="btn" onclick="location.reload()">Try again</button></div>';
+    }
+  })();
 </script>
 </body>
 </html>

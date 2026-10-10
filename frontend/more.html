@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>More — Chadrey Wholesale</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="page narrow">
+  <h1 class="large-title">More</h1>
+
+  <div class="list">
+    <a class="cell" href="how-it-works.html"><span class="cell-icon" style="background:var(--blue)" data-i="help"></span><span class="grow">How it works</span><span class="chev" data-i="chev"></span></a>
+    <a class="cell" href="contact.html"><span class="cell-icon" style="background:var(--green)" data-i="chat"></span><span class="grow">Contact us</span><span class="chev" data-i="chev"></span></a>
+  </div>
+
+  <div class="list-header">Owner</div>
+  <div class="list">
+    <a class="cell" href="admin.html"><span class="cell-icon" style="background:var(--indigo)" data-i="tune"></span><span class="grow"><span class="title">Manage products &amp; prices</span><span class="sub">Add dealer goods, set prices, send quotes</span></span><span class="chev" data-i="chev"></span></a>
+  </div>
+
+  <p class="footnote center" style="margin-top:28px">Chadrey Wholesale<br>Prices are indicative and confirmed in your quotation.<span id="demo"></span></p>
+</main>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="ui.js"></script>
+<script>
+  UI.mount({ tab: "more", title: "More" });
+  document.querySelectorAll("[data-i]").forEach((el) => { el.innerHTML = UI.icon(el.dataset.i, el.classList.contains("chev") ? 18 : 18); });
+  if (!Store.remote) document.getElementById("demo").innerHTML = "<br><br>Demo mode: everything is saved in this browser only.";
+</script>
+</body>
+</html>

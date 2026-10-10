@@ -2,7 +2,7 @@ name = "chadrey-wholesale-api"
 main = "src/index.js"
 compatibility_date = "2026-08-01"
 
-# KV namespace for storing quote requests / quotations / invoices.
+# One KV namespace holds everything: the product catalogue, photos, settings and quotes.
 # Create with: wrangler kv namespace create QUOTES
 # then paste the returned id below.
 [[kv_namespaces]]
@@ -10,9 +10,9 @@ binding = "QUOTES"
 id = "REPLACE_WITH_KV_NAMESPACE_ID"
 
 # Secrets (set with `wrangler secret put NAME`, never commit real values):
-#   APPS_SCRIPT_WEBHOOK_URL  — the deployed Google Apps Script web app URL
-#   APPS_SCRIPT_SHARED_SECRET — a random string both sides check, so the
-#                                Apps Script endpoint only accepts requests
-#                                that actually came from this Worker
-#   ADMIN_TOKEN               — simple bearer token gate for /api/admin/*
-#                                routes until real auth is built
+#   ADMIN_TOKEN               — your owner access code. Anyone who has it can add/edit products
+#                                and prices and see all customers, so make it long and random.
+#                                (Required: without it every /api/admin/* route refuses requests.)
+#   APPS_SCRIPT_WEBHOOK_URL   — (optional) the deployed Google Apps Script web app URL, for emails
+#   APPS_SCRIPT_SHARED_SECRET — (optional) a random string both sides check, so the Apps Script
+#                                endpoint only accepts requests that actually came from this Worker
