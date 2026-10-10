@@ -2,118 +2,133 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <title>Product — Chadrey Wholesale</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
-<style>
-  .gallery-thumbs{display:flex; gap:0.6rem; margin-top:0.75rem;}
-  .gallery-thumbs .thumb{width:64px; height:64px; border-radius:8px; background:var(--bg); border:2px solid var(--line); display:flex; align-items:center; justify-content:center; cursor:pointer;}
-  .gallery-thumbs .thumb.active{border-color:var(--brand);}
-  .gallery-thumbs .thumb svg{width:55%; height:55%; color:var(--brand);}
-  .detail-list{border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-top:1.25rem;}
-  .detail-list .row{display:flex; justify-content:space-between; padding:0.65rem 1rem; font-size:0.85rem; border-bottom:1px solid var(--line);}
-  .detail-list .row:last-child{border-bottom:0;}
-  .detail-list .row span:first-child{color:var(--ink-faint);}
-  .quote-panel{background:var(--white); border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow);}
-</style>
 </head>
 <body>
-<header class="site">
-  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
-  <nav class="main">
-    <a href="index.html">Home</a>
-    <a href="products.html" class="active">Products</a>
-    <a href="request-quote.html">Request a Quote</a>
-    <a href="how-it-works.html">How It Works</a>
-    <a href="my-quotes.html">My Quotes</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <div class="nav-actions">
-    <a href="my-quotes.html" class="nav-icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8"/></svg><span class="dot"></span></a>
-    <div class="avatar">AB</div>
-  </div>
-</header>
-<div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; <a href="products.html">Products</a> &rsaquo; <span id="bcName">Product</span></div>
+<main class="page" id="root"><div class="skel" style="aspect-ratio:1/1;margin-top:8px"></div></main>
 
-<main class="page page-pad">
-  <div class="grid-2" id="productDetail"></div>
-</main>
+<div class="actionbar" id="bar" hidden><div class="actionbar-inner">
+  <a class="btn icon-btn" id="chatBtn" hidden aria-label="Chat on WhatsApp" target="_blank" rel="noopener"></a>
+  <button class="btn btn-primary grow" id="quoteBtn">Request quote</button>
+</div></div>
 
-<footer class="site">Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a></footer>
-
-<script src="data.js"></script>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="ui.js"></script>
 <script>
-  const id = getQueryParam('id') || PRODUCTS[0].id;
-  const p = PRODUCTS.find(x => x.id === id) || PRODUCTS[0];
-  document.title = p.name + ' — Chadrey Wholesale';
-  document.getElementById('bcName').textContent = p.name;
+  UI.mount({ tab: "products", title: "", back: true, backHref: "products.html", tabs: false, actionbar: true });
 
-  document.getElementById('productDetail').innerHTML = `
-    <div>
-      <div class="card-visual card" style="aspect-ratio:4/3; position:relative;">
-        <span class="moq-flag" style="position:absolute; top:0.9rem; left:0.9rem;">MOQ ${p.moq} pcs</span>
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:42%;height:42%;color:var(--brand);">${ICONS[p.icon]}</svg>
-      </div>
-      <div class="gallery-thumbs">
-        <div class="thumb active"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">${ICONS[p.icon]}</svg></div>
-        <div class="thumb"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.6;">${ICONS[p.icon]}</svg></div>
-        <div class="thumb"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.3;">${ICONS[p.icon]}</svg></div>
-      </div>
+  const id = UI.qs("id");
+  const $root = document.getElementById("root");
+  let p, s, qty = 1, color = "", sizes = new Set();
 
-      <div class="detail-list">
-        <div class="row"><span>Category</span><span>Apparel</span></div>
-        <div class="row"><span>Minimum order</span><span>${p.moq} pieces</span></div>
-        <div class="row"><span>Available colours</span><span>${p.colors.join(', ')}</span></div>
-        <div class="row"><span>Available sizes</span><span>${p.sizes.join(', ')}</span></div>
-        <div class="row"><span>Packaging</span><span>${p.packaging.join(', ')}</span></div>
-        <div class="row"><span>Customization</span><span>${p.customization.join(', ')}</span></div>
-      </div>
-    </div>
+  const stepFor = (moq) => (moq >= 100 ? 50 : moq >= 20 ? 10 : 1);
+  const unitLabel = (n) => (n === 1 ? p.unit : p.unit + "s");
 
-    <div>
-      <h1>${p.name}</h1>
-      <p class="lede">${p.desc}</p>
-      <p class="price-tag" style="font-size:1rem; margin-top:0.5rem;">Price: Request a Quote</p>
+  function tierLabel(i) {
+    const t = p.tiers[i], next = p.tiers[i + 1];
+    return next ? t.min + "–" + (next.min - 1) + " " + p.unit + "s" : t.min + "+ " + p.unit + "s";
+  }
 
-      <div class="quote-panel" style="margin-top:1.5rem;">
-        <h3 style="margin:0 0 1rem; font-size:1.02rem;">Request a Quote</h3>
+  function chips(list, kind) {
+    return '<div class="chips wrap" data-kind="' + kind + '">' + list.map((v) =>
+      '<button class="chip" type="button" data-v="' + UI.esc(v) + '" aria-pressed="false">' + UI.esc(v) + "</button>").join("") + "</div>";
+  }
 
-        <div class="field-group cols-2">
-          <div>
-            <label>Colour</label>
-            <select id="colorSel"></select>
-          </div>
-          <div>
-            <label>Size</label>
-            <select id="sizeSel"></select>
-          </div>
-        </div>
+  function render() {
+    document.title = p.name + " — Chadrey Wholesale";
+    const imgs = p.images.length ? p.images.map((u) => '<img src="' + UI.esc(Store.img(u)) + '" alt="' + UI.esc(p.name) + '">').join("") : "<div>" + UI.visual(p, false) + "</div>";
+    const details = [
+      ["Category", p.category], ["Minimum order", p.moq + " " + unitLabel(p.moq)],
+      p.lead && ["Lead time", p.lead], p.origin && ["Ships from", p.origin],
+      p.packaging.length && ["Packaging", p.packaging.join(", ")], p.customization.length && ["Customisation", p.customization.join(", ")],
+    ].filter(Boolean);
 
-        <div style="height:1rem"></div>
-        <label>Quantity (pieces)</label>
-        <input type="number" id="qtyInput" min="${p.moq}" value="${p.moq}">
+    $root.innerHTML =
+      '<div class="detail" style="margin-top:6px">' +
+        '<div class="gallery-wrap"><div class="gallery" id="gal">' + imgs + '</div><div class="dots" id="dots"></div></div>' +
+        '<div class="stack">' +
+          "<div><h1>" + UI.esc(p.name) + "</h1>" +
+            '<div class="tags" style="margin-top:8px"><span class="tag">' + UI.esc(p.category) + "</span>" + (p.origin ? '<span class="tag">' + UI.esc(p.origin) + "</span>" : "") + (p.lead ? '<span class="tag">' + UI.esc(p.lead) + "</span>" : "") + "</div>" +
+            '<div class="price-hero"><span class="amt" id="unitPrice"></span><span class="unit">/ ' + UI.esc(p.unit) + '</span></div>' +
+            '<div class="caption" id="approx" style="margin-top:2px"></div>' +
+            '<div class="price-note">' + UI.icon("info", 15) + "<span>Today's price" + (p.priceUpdated ? ", updated " + Store.fmtDate(p.priceUpdated) : "") + ". It follows the exchange rate — your quotation confirms the final price.</span></div>" +
+          "</div>" +
+          '<div class="tiers" id="tiers">' + p.tiers.map((t, i) => '<div class="tier" data-i="' + i + '"><b>' + Store.money(t.price) + "</b><span>" + tierLabel(i) + "</span></div>").join("") + "</div>" +
+          (p.desc ? '<p class="muted" style="font-size:16px;line-height:1.45">' + UI.esc(p.desc) + "</p>" : "") +
+          (p.colors.length ? '<div><div class="list-header">Colour</div>' + chips(p.colors, "color") + "</div>" : "") +
+          (p.sizes.length ? '<div><div class="list-header">Sizes <span style="text-transform:none">(pick any)</span></div>' + chips(p.sizes, "size") + "</div>" : "") +
+          '<div class="list"><div class="cell"><div class="grow"><span class="title">Quantity</span><span class="sub">Minimum ' + p.moq + "</span></div>" +
+            '<div class="stepper"><button type="button" id="minus" aria-label="Fewer">−</button><input id="qty" type="number" inputmode="numeric" min="' + p.moq + '" aria-label="Quantity"><button type="button" id="plus" aria-label="More">+</button></div></div>' +
+            '<div class="total-row cell" style="min-height:0"><span class="muted">Estimated total</span><b id="total"></b></div></div>' +
+          '<p class="footnote" style="padding-top:0">Estimate for the product only. Shipping and duties are added in your quotation.</p>' +
+          '<div class="list">' + details.map((d) => '<div class="cell"><span class="grow muted">' + d[0] + '</span><span class="value" style="color:var(--label)">' + UI.esc(d[1]) + "</span></div>").join("") + "</div>" +
+        "</div>" +
+      "</div>";
 
-        <div style="height:1rem"></div>
-        <label>Packaging Preference</label>
-        <select id="packagingSel">${p.packaging.map(o=>`<option>${o}</option>`).join('')}</select>
+    const gal = document.getElementById("gal"), dots = document.getElementById("dots");
+    if (p.images.length > 1) {
+      dots.innerHTML = p.images.map((_, i) => "<i" + (i === 0 ? ' class="on"' : "") + "></i>").join("");
+      gal.addEventListener("scroll", () => {
+        const i = Math.round(gal.scrollLeft / gal.clientWidth);
+        [...dots.children].forEach((d, j) => d.classList.toggle("on", i === j));
+      }, { passive: true });
+    }
 
-        <div style="height:1rem"></div>
-        <label>Customization / Printing</label>
-        <select id="customSel">${p.customization.map(o=>`<option>${o}</option>`).join('')}</select>
+    document.querySelectorAll('[data-kind="color"] .chip').forEach((b) => b.addEventListener("click", () => {
+      color = color === b.dataset.v ? "" : b.dataset.v;
+      document.querySelectorAll('[data-kind="color"] .chip').forEach((x) => x.setAttribute("aria-pressed", x.dataset.v === color));
+    }));
+    document.querySelectorAll('[data-kind="size"] .chip').forEach((b) => b.addEventListener("click", () => {
+      const on = b.getAttribute("aria-pressed") !== "true";
+      b.setAttribute("aria-pressed", on); on ? sizes.add(b.dataset.v) : sizes.delete(b.dataset.v);
+    }));
 
-        <div style="height:1rem"></div>
-        <label>Additional Notes <span class="hint">(optional)</span></label>
-        <textarea placeholder="e.g. Please print our logo on the front left chest."></textarea>
+    const $qty = document.getElementById("qty");
+    $qty.value = qty;
+    const set = (v) => { qty = Math.max(p.moq, Math.round(v) || p.moq); $qty.value = qty; update(); };
+    document.getElementById("minus").onclick = () => set(qty - stepFor(p.moq));
+    document.getElementById("plus").onclick = () => set(qty + stepFor(p.moq));
+    $qty.addEventListener("input", () => { const v = parseInt($qty.value, 10); if (v >= 1) { qty = v; update(true); } });
+    $qty.addEventListener("change", () => set(parseInt($qty.value, 10)));
+    update();
+  }
 
-        <a class="btn btn-primary btn-block" style="margin-top:1.25rem;" href="request-quote.html?id=${p.id}">Request Quote</a>
-      </div>
-    </div>
-  `;
+  function update(typing) {
+    const unit = Store.priceFor(p, qty), ti = Store.tierIndexFor(p, qty);
+    document.getElementById("unitPrice").textContent = Store.money(unit);
+    document.getElementById("approx").textContent = Store.approx(unit, s);
+    document.getElementById("total").textContent = qty >= p.moq ? Store.money(unit * qty) : "—";
+    document.querySelectorAll(".tier").forEach((t) => t.classList.toggle("on", +t.dataset.i === ti && qty >= p.moq));
+    const chat = document.getElementById("chatBtn");
+    if (chat.dataset.base) chat.href = chat.dataset.base + "?text=" + encodeURIComponent("Hi, I'm interested in " + p.name + " (" + qty + " " + p.unit + "s).");
+  }
 
-  document.getElementById('colorSel').innerHTML = p.colors.map(c=>`<option>${c}</option>`).join('');
-  document.getElementById('sizeSel').innerHTML = p.sizes.map(s=>`<option>${s}</option>`).join('');
+  document.getElementById("quoteBtn").addEventListener("click", () => {
+    if (qty < p.moq) { UI.toast("Minimum order is " + p.moq); return; }
+    try { sessionStorage.setItem("chadrey.draft", JSON.stringify({ id: p.id, qty, color, sizes: [...sizes] })); } catch (e) {}
+    location.href = "request-quote.html?id=" + encodeURIComponent(p.id);
+  });
+
+  (async function () {
+    try {
+      [p, s] = await Promise.all([Store.product(id), Store.settings()]);
+      if (!p) throw Object.assign(new Error("This product isn't available any more."), { missing: true });
+      qty = p.moq;
+      render();
+      document.getElementById("bar").hidden = false;
+      const wa = await UI.whatsappHref("");
+      if (wa) { const c = document.getElementById("chatBtn"); c.hidden = false; c.innerHTML = UI.icon("chat", 24); c.dataset.base = wa.split("?")[0]; c.href = wa; update(); }
+    } catch (e) {
+      $root.innerHTML = '<div class="empty">' + UI.icon("info", 56) + "<h3>" + (e.missing ? "Product not found" : "Couldn't load product") + "</h3><p>" + UI.esc(e.message) + '</p><a class="btn" href="products.html">Browse products</a></div>';
+    }
+  })();
 </script>
 </body>
 </html>

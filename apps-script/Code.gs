@@ -45,6 +45,14 @@ function doPost(e) {
     }
   }
 
+  if (type === "quotation_accepted") {
+    MailApp.sendEmail({
+      to: ADMIN_EMAIL,
+      subject: `Quotation accepted — ${ref}`,
+      body: `${record.company} accepted the quotation for ${record.product} (${ref}). Create their invoice in the admin dashboard.`,
+    });
+  }
+
   if (type === "quotation_sent" && to) {
     MailApp.sendEmail({
       to,

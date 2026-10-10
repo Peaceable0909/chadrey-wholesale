@@ -2,50 +2,101 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <title>Products — Chadrey Wholesale</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site">
-  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
-  <nav class="main">
-    <a href="index.html">Home</a>
-    <a href="products.html" class="active">Products</a>
-    <a href="how-it-works.html">How It Works</a>
-    <a href="my-quotes.html">My Quotes</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
+<main class="page">
+  <h1 class="large-title">Products</h1>
 
-<main class="page page-pad">
-  <p class="eyebrow">Catalog</p>
-  <h1>Browse products</h1>
-  <p class="lede">No fixed prices — every product is priced per your exact order. Open a product to see colors, sizes, and minimum order quantity, then request a quote.</p>
+  <div class="search" id="searchBox">
+    <span id="searchIcon"></span>
+    <input type="search" id="q" placeholder="Search products" aria-label="Search products" autocomplete="off" enterkeyhint="search">
+    <button class="clear" id="clear" aria-label="Clear search"></button>
+  </div>
 
-  <div class="grid-3" id="catalog" style="margin-top:1.75rem;"></div>
+  <div class="chips" id="cats" style="margin-top:12px" role="group" aria-label="Category"></div>
+
+  <div class="row" style="margin:14px 0 12px; justify-content:space-between">
+    <span class="caption" id="count" aria-live="polite">&nbsp;</span>
+    <div class="seg" id="sort" style="width:min(250px,62%)" role="group" aria-label="Sort">
+      <button data-sort="new" aria-pressed="true">Newest</button>
+      <button data-sort="low" aria-pressed="false">Price ↑</button>
+      <button data-sort="high" aria-pressed="false">Price ↓</button>
+    </div>
+  </div>
+
+  <div class="products" id="grid"></div>
 </main>
 
-<footer class="site">
-  Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a>
-</footer>
-
-<script src="data.js"></script>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="ui.js"></script>
 <script>
-  document.getElementById('catalog').innerHTML = PRODUCTS.map(p => `
-    <div class="product-card">
-      <div class="card-visual"><span class="moq-flag">MOQ ${p.moq}</span>
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${ICONS[p.icon]}</svg>
-      </div>
-      <div class="card-body">
-        <h3>${p.name}</h3>
-        <p>${p.desc}</p>
-        <span class="price-tag">Price: Request a Quote</span>
-        <a class="btn btn-secondary btn-block" href="product.html?id=${p.id}">View product</a>
-      </div>
-    </div>`).join('');
+  UI.mount({ tab: "products", title: "Products" });
+  document.getElementById("searchIcon").innerHTML = UI.icon("search", 18);
+  document.getElementById("clear").innerHTML = UI.icon("clear", 18);
+
+  const state = { q: UI.qs("q") || "", cat: UI.qs("cat") || "", sort: "new" };
+  let items = [], settings = null;
+  const $q = document.getElementById("q"), $grid = document.getElementById("grid");
+  $q.value = state.q;
+
+  function sync() {
+    document.getElementById("searchBox").classList.toggle("has-value", !!$q.value);
+    const u = new URLSearchParams();
+    if (state.q) u.set("q", state.q);
+    if (state.cat) u.set("cat", state.cat);
+    history.replaceState(null, "", u.toString() ? "?" + u : location.pathname);
+  }
+
+  function renderChips() {
+    const cats = Store.categories(items);
+    const chip = (label, val) => '<button class="chip" aria-pressed="' + (state.cat === val) + '" data-cat="' + UI.esc(val) + '">' + UI.esc(label) + "</button>";
+    document.getElementById("cats").innerHTML = chip("All", "") + cats.map((c) => chip(c.name, c.name)).join("");
+  }
+
+  function render() {
+    const q = state.q.trim().toLowerCase();
+    let out = items.filter((p) => (!state.cat || p.category === state.cat) &&
+      (!q || (p.name + " " + p.category + " " + p.desc + " " + p.origin).toLowerCase().includes(q)));
+    const first = (p) => p.tiers[0].price;
+    if (state.sort === "low") out.sort((a, b) => first(a) - first(b));
+    else if (state.sort === "high") out.sort((a, b) => first(b) - first(a));
+    else out.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+    document.getElementById("count").textContent = out.length + (out.length === 1 ? " product" : " products");
+    $grid.innerHTML = out.length ? out.map((p) => UI.productCard(p, settings)).join("")
+      : '<div class="empty" style="grid-column:1/-1">' + UI.icon("search", 56) + "<h3>No results</h3><p>Try a different word or category.</p></div>";
+    sync();
+  }
+
+  $q.addEventListener("input", () => { state.q = $q.value; render(); });
+  document.getElementById("clear").addEventListener("click", () => { $q.value = ""; state.q = ""; render(); $q.focus(); });
+  document.getElementById("cats").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-cat]"); if (!b) return;
+    state.cat = b.dataset.cat; renderChips(); render();
+  });
+  document.getElementById("sort").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-sort]"); if (!b) return;
+    state.sort = b.dataset.sort;
+    document.querySelectorAll("#sort button").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    render();
+  });
+
+  (async function load() {
+    $grid.innerHTML = UI.skeletonGrid(6);
+    try {
+      [items, settings] = await Promise.all([Store.products(), Store.settings()]);
+      renderChips(); render();
+    } catch (e) {
+      $grid.innerHTML = '<div class="empty" style="grid-column:1/-1">' + UI.icon("info", 56) + "<h3>Couldn't load products</h3><p>" + UI.esc(e.message) + '</p><button class="btn" onclick="location.reload()">Try again</button></div>';
+    }
+  })();
 </script>
 </body>
 </html>

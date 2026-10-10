@@ -2,59 +2,63 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <title>Quotation — Chadrey Wholesale</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site">
-  <a href="index.html" class="brand"><svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 27 12 9l5 8 4-6 9 15H2Z" fill="currentColor"/></svg><span class="brand-lines">CHADREY<small>WHOLESALE</small></span></a>
-  <nav class="main">
-    <a href="index.html">Home</a>
-    <a href="products.html">Products</a>
-    <a href="request-quote.html">Request a Quote</a>
-    <a href="how-it-works.html">How It Works</a>
-    <a href="my-quotes.html" class="active">My Quotes</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <div class="nav-actions"><div class="avatar">AB</div></div>
-</header>
+<main class="page narrow" id="root"><div class="skel" style="height:320px;margin-top:8px"></div></main>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="ui.js"></script>
+<script>
+  UI.mount({ tab: "quotes", title: "Quotation", back: true, backHref: "my-quotes.html", tabs: false });
+  const $root = document.getElementById("root");
+  const ref = UI.qs("ref");
 
-<main class="page page-pad" style="max-width:800px;">
-  <p class="eyebrow"><a href="my-quotes.html" style="color:inherit;">&larr; Back to My Quotes</a></p>
-  <h1 style="font-size:1.4rem;">Document 2 of 3: Quotation</h1>
-  <p class="lede">Our preliminary price for your request — not yet a final invoice.</p>
+  const line = (a, b) => b ? '<div class="doc-line"><span>' + a + "</span><span>" + UI.esc(b) + "</span></div>" : "";
 
-  <div class="doc-card" style="margin-top:1.5rem;">
-    <div class="doc-head">
-      <div><h3>Wholesale Quotation</h3><div class="doc-id">Quote #WR-Q-2026-00125 &middot; Aug 4, 2026</div></div>
-      <span class="doc-status">Estimate</span>
-    </div>
-    <div class="doc-body">
-      <table class="doc-table">
-        <tbody>
-          <tr><td style="color:var(--ink-faint);">Product</td><td style="text-align:right;">100% Cotton Oversized T-Shirt</td></tr>
-          <tr><td style="color:var(--ink-faint);">Selected preference</td><td style="text-align:right;">Black, mixed sizes S–XXL</td></tr>
-          <tr><td style="color:var(--ink-faint);">Quantity</td><td style="text-align:right;">500 pieces</td></tr>
-          <tr><td style="color:var(--ink-faint);">Estimated unit price</td><td style="text-align:right;">$4.35 / piece</td></tr>
-          <tr class="total"><td>Estimated product cost</td><td style="text-align:right;">$2,175.00</td></tr>
-        </tbody>
-      </table>
+  async function render() {
+    const [q, s] = await Promise.all([Store.quote(ref), Store.settings()]);
+    if (!q) { $root.innerHTML = '<div class="empty">' + UI.icon("doc", 56) + "<h3>Quote not found</h3><p>Check the reference and try again.</p><a class=\"btn\" href=\"my-quotes.html\">Back to quotes</a></div>"; return; }
+    Store.rememberRef(q.ref);
+    const wa = await UI.whatsappHref("Hi, about my quote " + q.ref);
+    const chosen = [q.color, (q.sizes || []).join(", ")].filter(Boolean).join(" · ");
+    const base = line("Product", q.product) + line("Options", chosen) + line("Packaging", q.packaging) + line("Customisation", q.customization);
+    const chat = wa ? '<a class="btn btn-block" target="_blank" rel="noopener" href="' + UI.esc(wa) + '">Ask a question</a>' : "";
 
-      <div class="doc-note">
-        <strong>Please note:</strong> this is a preliminary quotation. Final pricing may change due to exchange-rate fluctuations, supplier pricing, shipping costs, taxes, or other applicable charges. Shipping and tax are not included in the figure above.
-      </div>
-
-      <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.75rem;">
-        <a class="btn btn-primary" href="invoice.html?ref=WR-2026-00125">Accept &amp; continue to invoice</a>
-        <a class="btn btn-secondary" href="contact.html">Request changes</a>
-      </div>
-    </div>
-  </div>
-</main>
-
-<footer class="site">Chadrey Wholesale — click-through prototype, no live backend yet. &middot; <a href="admin.html">Admin view (prototype)</a></footer>
+    if (!q.quotation) {
+      $root.innerHTML = '<h1 class="large-title">Quote request</h1><div class="doc">' +
+        '<div class="doc-top"><div class="kicker">' + UI.esc(q.ref) + '</div><div class="big" style="font-size:28px">Being priced</div><div>' + UI.statusBadge("pending") + "</div></div>" +
+        '<div class="doc-lines">' + base + line("Quantity", q.qty + " pcs") + line("Price you saw", q.estUnitPrice ? Store.money(q.estUnitPrice, q.estCurrency) + " / pc" : "") + line("Sent", Store.fmtDate(q.createdAt)) + "</div>" +
+        '<div class="doc-note">We\'re confirming today\'s price and stock with the dealer. You\'ll see your quotation here, usually within 1–2 business days.</div>' +
+        (chat ? '<div class="doc-actions">' + chat + "</div>" : "") + "</div>";
+      return;
+    }
+    const qt = q.quotation, total = qt.unitPrice * qt.qty;
+    const accepted = !!q.acceptedAt, hasInvoice = !!q.invoice;
+    $root.innerHTML = '<h1 class="large-title">Quotation</h1><div class="doc">' +
+      '<div class="doc-top"><div class="kicker">Estimated product cost</div><div class="big">' + UI.esc(Store.money(total, qt.currency)) + '</div><div class="caption">' + UI.esc(q.ref) + " · " + Store.fmtDate(qt.issuedAt) + "</div></div>" +
+      '<div class="doc-lines">' + base + line("Quantity", qt.qty + " pcs") + line("Unit price", Store.money(qt.unitPrice, qt.currency) + " / pc") +
+        '<div class="doc-line total"><span>Product total</span><span>' + UI.esc(Store.money(total, qt.currency)) + "</span></div></div>" +
+      '<div class="doc-note">This is an estimate. The final price can change with the exchange rate, dealer pricing, shipping and duties — all confirmed on your invoice. Shipping and duties are not included.' + (qt.notes ? "\n\n" + UI.esc(qt.notes) : "") + "</div>" +
+      '<div class="doc-actions">' +
+        (hasInvoice ? '<a class="btn btn-primary btn-block" href="invoice.html?ref=' + encodeURIComponent(q.ref) + '">View invoice</a>'
+          : accepted ? '<div class="center muted" style="padding:6px 0">' + UI.statusBadge("paid").replace("Paid", "Accepted") + '<p class="footnote">Thanks — we\'re preparing your invoice.</p></div>'
+          : '<button class="btn btn-primary btn-block" id="accept">Accept quotation</button>') +
+        chat + "</div></div>";
+    const acc = document.getElementById("accept");
+    if (acc) acc.onclick = async () => {
+      acc.disabled = true; acc.textContent = "Accepting…";
+      try { await Store.acceptQuotation(q.ref); UI.toast("Accepted — invoice coming soon"); render(); }
+      catch (e) { UI.toast(e.message); acc.disabled = false; acc.textContent = "Accept quotation"; }
+    };
+  }
+  render().catch((e) => { $root.innerHTML = '<div class="empty">' + UI.icon("info", 56) + "<h3>Couldn't load</h3><p>" + UI.esc(e.message) + "</p></div>"; });
+</script>
 </body>
 </html>
