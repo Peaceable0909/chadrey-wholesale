@@ -3,11 +3,10 @@ main = "src/index.js"
 compatibility_date = "2026-08-01"
 
 # One KV namespace holds everything: the product catalogue, photos, settings and quotes.
-# Create with: wrangler kv namespace create QUOTES
-# then paste the returned id below.
+# Created as "chadrey-wholesale-QUOTES" in your Cloudflare account.
 [[kv_namespaces]]
 binding = "QUOTES"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "ec503fff3253488d9abea72bada36927"
 
 # Secrets (set with `wrangler secret put NAME`, never commit real values):
 #   ADMIN_TOKEN               — your owner access code. Anyone who has it can add/edit products
